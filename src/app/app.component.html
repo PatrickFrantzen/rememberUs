@@ -1,3 +1,9 @@
 <ion-app>
+  @if (platformService.useMaterialUI()) {
+  <app-desktop-layout>
+    <ion-router-outlet></ion-router-outlet>
+  </app-desktop-layout>
+  } @else {
   <ion-router-outlet></ion-router-outlet>
+  }
 </ion-app>

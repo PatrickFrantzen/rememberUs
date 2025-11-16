@@ -112,3 +112,85 @@ Here is a link to the most recent Angular style guide https://angular.dev/style-
 - Design services around a single responsibility
 - Use the `providedIn: 'root'` option for singleton services
 - Use the `inject()` function instead of constructor injection
+
+
+## Responsive Design & Platform-Specific UI
+
+This app uses a hybrid approach for desktop and mobile interfaces:
+
+### Platform Detection
+
+- Use `PlatformDetectionService` to detect the current platform
+- Available signals:
+  - `isMobile()` - true for mobile devices or screens < 768px
+  - `isTablet()` - true for tablets or screens 768px - 1024px
+  - `isDesktop()` - true for desktop or screens >= 1024px
+  - `useIonicUI()` - true when Ionic components should be used (mobile/tablet)
+  - `useMaterialUI()` - true when Angular Material should be used (desktop)
+
+### UI Component Selection
+
+**Desktop (>= 1024px):**
+- Use Angular Material components
+- Navigation: Sidebar (`mat-sidenav`) with `DesktopLayoutComponent`
+- Dialogs: `MatDialog` via `ResponsiveDialogService`
+- Lists: `mat-list`
+- Buttons: `mat-button`, `mat-icon-button`
+- Forms: Material form fields
+
+**Mobile/Tablet (< 1024px):**
+- Use Ionic components
+- Navigation: Bottom tabs (`ion-tabs`)
+- Modals: `ModalController` via `ResponsiveDialogService`
+- Lists: `ion-list`
+- Buttons: `ion-button`
+- Forms: Ionic form components
+
+### Usage Examples
+
+**Opening Dialogs/Modals:**
+```typescript
+import { inject } from '@angular/core';
+import { ResponsiveDialogService } from './services/responsive-dialog.service';
+
+export class MyComponent {
+  private readonly dialogService = inject(ResponsiveDialogService);
+  
+  async openDialog() {
+    const dialogRef = await this.dialogService.open(MyDialogComponent, {
+      data: { message: 'Hello' },
+      width: '500px',
+      disableClose: false
+    });
+    
+    const result = await dialogRef.afterClosed();
+  }
+}
+```
+
+**Conditional UI Rendering:**
+```typescript
+import { inject } from '@angular/core';
+import { PlatformDetectionService } from './services/platform-detection.service';
+
+export class MyComponent {
+  protected readonly platform = inject(PlatformDetectionService);
+}
+```
+
+```html
+@if (platform.useMaterialUI()) {
+  <button mat-raised-button>Material Button</button>
+} @else {
+  <ion-button>Ionic Button</ion-button>
+}
+```
+
+### Important Rules
+
+- ALWAYS inject `PlatformDetectionService` to check which UI library to use
+- Use `ResponsiveDialogService` instead of directly using `MatDialog` or `ModalController`
+- Desktop layout automatically wraps content in sidebar navigation
+- Mobile layout uses the standard Ionic tabs at the bottom
+- Import Material modules only in desktop-specific components
+- Import Ionic components only in mobile-specific components or when platform detection is used

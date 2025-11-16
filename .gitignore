@@ -74,8 +74,9 @@ Thumbs.db
 .firebaserc
 
 # environment files
-/src/environments/environment*.ts
-/src/environments/*.prod.ts
+/src/environments/environment.ts
+/src/environments/environment.prod.ts
+
 
 firebase.json
 firestore.indexes.json
@@ -83,3 +84,5 @@ firestore.rules
 storage.rules
 .github/workflows/firebase-hosting-merge.yml
 .github/workflows/firebase-hosting-pull-request.yml
+src/environments/environment.ts
+src/environments/environment.prod.ts
