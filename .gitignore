@@ -68,3 +68,18 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Firebase
+.firebase/
+.firebaserc
+
+# environment files
+/src/environments/environment*.ts
+/src/environments/*.prod.ts
+
+firebase.json
+firestore.indexes.json
+firestore.rules
+storage.rules
+.github/workflows/firebase-hosting-merge.yml
+.github/workflows/firebase-hosting-pull-request.yml
